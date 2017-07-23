@@ -1,0 +1,43 @@
+---
+title: "Bay Area Farmer's Markets"
+author: "Bamini Balaji"
+date: "July 23, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE, comment=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Fresh Fruit and Vegetables
+
+I like to buy fresh fruit and vegetables. So here is a map of my favorite bay area farmers markets.  
+
+```{r echo=FALSE, comment=FALSE, warning=FALSE}
+library(leaflet)
+```
+
+These farmers markets are typically open from 9:00 am to 1:00 pm on either Saturday or Sunday. 
+
+```{r, echo=FALSE, warning=FALSE, comment=FALSE, message=FALSE}
+fruitIcon = makeIcon(iconUrl = "http://images.happyteachers.net/clip-art-thanksgiving-happy-fruit-basket-100057_big.png", iconWidth = 50, iconHeight = 50, iconAnchorX = 30, iconAnchorY = 25)
+
+sites <- c("<a href = 'http://www.mountainview.gov/depts/cs/events/farmers.asp'>Mountain View</a>",
+           "<a href = 'http://www.burlingamechamber.org/burlingame-events/burlingame-fresh-market/'>Burlingame</a>",
+           "<a href = 'http://www.belmont.gov/living-working-here/doing-business/farmer-s-market'>Belmont</a>",
+           "<a href = 'https://www.yelp.com/biz/san-mateo-farmers-market-san-mateo-2'>San Mateo</a>", 
+           "<a href = 'https://www.facebook.com/sancarlosfarmersmarket/'>San Carlos</a>",
+           "<a href = 'http://uvfm.org/palo-alto-sundays/'>Palo Alto</a>", 
+           "<a href = 'https://www.facebook.com/RedwoodCityKiwanisFarmersMarket/'>Redwood City</a>", 
+           "<a href = 'https://www.localharvest.org/menlo-park-farmers-market-M3662'>Menlo Park</a>")
+
+
+farmers <- data.frame(lat = c(37.393789, 37.578764, 37.519657, 37.535069, 37.505067, 37.425453, 37.487884, 37.450485), 
+                      lng = c(-122.076649, -122.347114, -122.274682, -122.335182, -122.259447, -122.145451, -122.233145, -122.184169),
+                      day = c("Sunday", "Sunday", "Sunday", "Saturday", "Sunday", "Sunday", "Saturday", "Sunday"), 
+                      col = c("blue", "blue", "blue", "red", "blue", "blue", "red", "blue"))
+
+farmers %>% leaflet() %>% addTiles %>% addMarkers(icon = fruitIcon, popup = sites) %>% addCircleMarkers(color = farmers$col, fillColor = "transparent", radius = 26) %>% addLegend(labels = c("Saturday", "Sunday"), colors = c("red", "blue"))
+```
+
+
