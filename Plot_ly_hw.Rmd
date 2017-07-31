@@ -1,0 +1,37 @@
+---
+title: "Asteroid Impact"
+author: "Bamini Balaji"
+date: "July 30, 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r, include=FALSE, comment=FALSE, warning=FALSE}
+impacts <- read.csv("C:/Users/bamini/Documents/Coursera/Developing_Data_Products/Week3/impacts.csv", header = TRUE, fileEncoding="UTF-8-BOM")
+impacts$Object.Name <- as.character(impacts$Object.Name)
+orbits <- read.csv("C:/Users/bamini/Documents/Coursera/Developing_Data_Products/Week3/orbits.csv", header = TRUE, fileEncoding="UTF-8-BOM")
+orbits$Object.Name <- as.character(orbits$Object.Name)
+orbits$Object.Name <- gsub("\\(", "", orbits$Object.Name)
+orbits$Object.Name <- gsub("\\)", "", orbits$Object.Name)
+asteroids <- merge(impacts, orbits, by = "Object.Name", all.x = TRUE, all.y = FALSE)
+asteroids <- droplevels(asteroids)
+library(plotly)
+```
+
+## Asteroid Impact
+
+- This is an analysis using data that was collected by NASA's Near Earth Object Program. 
+- The data consists of an asteroid catalog for possibilities of future impact with Earth over the next 100 years. 
+- The **Palermo Scale** is used by astronomers to rate the potential hazard of impact.
+- Let's look at possible factors that affect the Palermo Scale
+
+
+***
+```{r echo=FALSE}
+plot_ly(asteroids, x = ~log(Cumulative.Impact.Probability), y = ~Cumulative.Palermo.Scale, size = ~Asteroid.Diameter..km., color = ~Asteroid.Velocity, mode = "markers", type = "scatter", text = ~paste("Asteroid: ", Object.Name))
+```
+Paleromo Scale versus Impact Probability (x-axis), Asteroid Velocity (color gradient) and Asteroid diameter (marker size) 
